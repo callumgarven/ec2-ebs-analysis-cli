@@ -31,7 +31,7 @@ test = [
 where = ["src"]
 
 [tool.uv]
-exclude-newer = "14 days"
+exclude-newer = "P14D"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ec2-ebs-analysis-cli"
+version = "0.1.0"
+description = "CLI tool to analyze and summarize EBS volume usage per EC2 instance across AWS regions."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "boto3",
+    "typer",
+]
+
+[project.scripts]
+ec2-ebs-analysis-cli = "ec2_ebs_analysis_cli.cli:main"
+
+[dependency-groups]
+test = [
+    "boto3-stubs[ec2]",
+    "moto[ec2]",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+    "ruff",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+exclude-newer = "14 days"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-v --strict-markers"

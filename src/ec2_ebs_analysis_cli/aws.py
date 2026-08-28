@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
 import boto3
@@ -62,7 +63,7 @@ class EC2Service:
         return volume_size_map
 
     def _parse_instance(
-        self, instance_data: dict[str, Any], volume_size_map: dict[str, int]
+        self, instance_data: Mapping[str, Any], volume_size_map: dict[str, int]
     ) -> EC2Instance:
         """Parse raw EC2 instance dictionary into model."""
         instance_id = instance_data.get("InstanceId", "unknown")

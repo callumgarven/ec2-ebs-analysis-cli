@@ -5,6 +5,7 @@ from enum import Enum
 # See https://www.cl.cam.ac.uk/teaching/2021/PrepCS/CompFunds/NumberSystems.html
 GIB_TO_GB_MULTIPLIER: float = 1.073741824
 
+
 class SortField(str, Enum):
     """Fields available for sorting."""
 
@@ -13,17 +14,20 @@ class SortField(str, Enum):
     STATE = "state"
     ID = "id"
 
+
 class SortOrder(str, Enum):
     """Direction of sort."""
 
     ASC = "asc"
     DESC = "desc"
 
+
 class OutputFormat(str, Enum):
     """Supported output formats."""
 
     PLAINTEXT = "plaintext"
     JSON = "json"
+
 
 @dataclass(frozen=True)
 class EBSVolume:
@@ -36,6 +40,7 @@ class EBSVolume:
     def size_gb(self) -> float:
         """Calculate volume size in decimal gigabytes (1 GB = 10^9 bytes)."""
         return self.size_gib * GIB_TO_GB_MULTIPLIER
+
 
 @dataclass(frozen=True)
 class EC2Instance:

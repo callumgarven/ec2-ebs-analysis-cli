@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from mypy_boto3_ec2 import EC2Client
     from mypy_boto3_ec2.type_defs import FilterTypeDef, InstanceTypeDef
 
+
 class EC2Service:
     """Encapsulates AWS EC2 API interactions."""
 
@@ -22,7 +23,9 @@ class EC2Service:
             filters.append({"Name": "tag:Name", "Values": [name_filter]})
 
         paginator = self.client.get_paginator("describe_instances")
-        page_iterator = paginator.paginate(Filters=filters) if filters else paginator.paginate()
+        page_iterator = (
+            paginator.paginate(Filters=filters) if filters else paginator.paginate()
+        )
 
         raw_instances: list[InstanceTypeDef] = []
         volume_ids: set[str] = set()

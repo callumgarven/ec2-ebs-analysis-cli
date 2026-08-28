@@ -1,5 +1,4 @@
-import sys
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 
@@ -12,6 +11,7 @@ app = typer.Typer(
     help="CLI tool to gather and summarize EBS volumes attached to EC2 instances.",
     add_completion=False,
 )
+
 
 def sort_instances(
     instances: list[EC2Instance], sort_by: SortField, sort_order: SortOrder
@@ -30,10 +30,11 @@ def sort_instances(
 
     return instances
 
+
 @app.command()
 def analyze(
     name: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--name",
             "-n",
@@ -79,7 +80,9 @@ def analyze(
     try:
         service = EC2Service(region_name=region)
         instances = service.get_instances(name_filter=name)
-        sorted_instances = sort_instances(instances, sort_by=sort_by, sort_order=sort_order)
+        sorted_instances = sort_instances(
+            instances, sort_by=sort_by, sort_order=sort_order
+        )
 
         if output_format == OutputFormat.JSON:
             output = format_json(sorted_instances)
@@ -92,9 +95,11 @@ def analyze(
         typer.echo(f"Error: {err}", err=True)
         raise typer.Exit(code=1) from err
 
+
 def main() -> None:
     """Entrypoint function for script and wrapper executables."""
     app(prog_name="ec2-ebs-analysis-cli")
+
 
 if __name__ == "__main__":
     main()

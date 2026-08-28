@@ -5,6 +5,7 @@ from ec2_ebs_analysis_cli.cli import app
 
 runner = CliRunner()
 
+
 def test_cli_help() -> None:
     """Verify --help returns expected usage instructions."""
     result = runner.invoke(app, ["--help"])
@@ -13,6 +14,7 @@ def test_cli_help() -> None:
     assert "--name" in result.output
     assert "--format" in result.output
     assert "--sort-by" in result.output
+
 
 def test_cli_execution_and_sorting(ec2_client: EC2Client) -> None:
     """Verify full CLI execution with client-side sorting."""
@@ -24,12 +26,17 @@ def test_cli_execution_and_sorting(ec2_client: EC2Client) -> None:
         MinCount=1,
         MaxCount=1,
         TagSpecifications=[
-            {"ResourceType": "instance", "Tags": [{"Key": "Name", "Value": "server-small"}]}
+            {
+                "ResourceType": "instance",
+                "Tags": [{"Key": "Name", "Value": "server-small"}],
+            }
         ],
     )
     id1 = res1["Instances"][0]["InstanceId"]
     ec2_client.stop_instances(InstanceIds=[id1])
-    ec2_client.attach_volume(VolumeId=v1["VolumeId"], InstanceId=id1, Device="/dev/xvdf")
+    ec2_client.attach_volume(
+        VolumeId=v1["VolumeId"], InstanceId=id1, Device="/dev/xvdf"
+    )
 
     # Instance B with 100 GiB
     v2 = ec2_client.create_volume(AvailabilityZone="eu-west-2a", Size=100)
@@ -39,12 +46,17 @@ def test_cli_execution_and_sorting(ec2_client: EC2Client) -> None:
         MinCount=1,
         MaxCount=1,
         TagSpecifications=[
-            {"ResourceType": "instance", "Tags": [{"Key": "Name", "Value": "server-large"}]}
+            {
+                "ResourceType": "instance",
+                "Tags": [{"Key": "Name", "Value": "server-large"}],
+            }
         ],
     )
     id2 = res2["Instances"][0]["InstanceId"]
     ec2_client.stop_instances(InstanceIds=[id2])
-    ec2_client.attach_volume(VolumeId=v2["VolumeId"], InstanceId=id2, Device="/dev/xvdf")
+    ec2_client.attach_volume(
+        VolumeId=v2["VolumeId"], InstanceId=id2, Device="/dev/xvdf"
+    )
 
     # Run default (asc by EBS size)
     result = runner.invoke(app, ["--region", "eu-west-2"])

@@ -2,6 +2,7 @@ from mypy_boto3_ec2 import EC2Client
 
 from ec2_ebs_analysis_cli.aws import EC2Service
 
+
 def test_get_instances_with_ebs_volumes(ec2_client: EC2Client) -> None:
     """Verify EC2 instances and attached volume sizes are retrieved."""
     # Create test volume
@@ -46,6 +47,7 @@ def test_get_instances_with_ebs_volumes(ec2_client: EC2Client) -> None:
     assert inst.total_ebs_gib == 88
     assert round(inst.total_ebs_gb, 1) == 94.5
 
+
 def test_server_side_name_filtering(ec2_client: EC2Client) -> None:
     """Verify server-side tag filtering returns only matching instances."""
     ec2_client.run_instances(
@@ -78,6 +80,7 @@ def test_server_side_name_filtering(ec2_client: EC2Client) -> None:
 
     assert len(filtered) == 1
     assert filtered[0].name == "alpha"
+
 
 def test_parse_instance_without_tags(ec2_client: EC2Client) -> None:
     """Verify instances lacking a Name tag default gracefully to 'None'."""

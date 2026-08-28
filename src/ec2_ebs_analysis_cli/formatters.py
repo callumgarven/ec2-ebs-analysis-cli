@@ -1,6 +1,8 @@
 import json
 from typing import Any
+
 from ec2_ebs_analysis_cli.models import EC2Instance
+
 
 def format_plaintext(instances: list[EC2Instance]) -> str:
     """Format instances into aligned columns using matrix transposition."""
@@ -16,7 +18,7 @@ def format_plaintext(instances: list[EC2Instance]) -> str:
             str(i.public_ip),
             i.instance_type,
             i.state,
-            f"{i.total_ebs_gb:.1f}"
+            f"{i.total_ebs_gb:.1f}",
         )
         for i in instances
     ]
@@ -32,6 +34,7 @@ def format_plaintext(instances: list[EC2Instance]) -> str:
 
     return "\n".join(lines)
 
+
 def format_json(instances: list[EC2Instance]) -> str:
     """Format instances and summary metrics as valid JSON."""
     payload: dict[str, Any] = {
@@ -44,7 +47,10 @@ def format_json(instances: list[EC2Instance]) -> str:
                 "instance_type": i.instance_type,
                 "state": i.state,
                 "total_ebs_size_gb": round(i.total_ebs_gb, 1),
-                "volumes": [{"id": v.volume_id, "size_gb": round(v.size_gb, 1)} for v in i.volumes],
+                "volumes": [
+                    {"id": v.volume_id, "size_gb": round(v.size_gb, 1)}
+                    for v in i.volumes
+                ],
             }
             for i in instances
         ],

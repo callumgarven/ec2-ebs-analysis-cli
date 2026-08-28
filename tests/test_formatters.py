@@ -3,6 +3,7 @@ import json
 from ec2_ebs_analysis_cli.formatters import format_json, format_plaintext
 from ec2_ebs_analysis_cli.models import EBSVolume, EC2Instance
 
+
 def test_ebs_volume_conversion_math() -> None:
     """Verify 100 GiB converts to ~107.4 decimal GB (1 GiB = 1.073741824 GB)."""
     v1 = EBSVolume(volume_id="vol-1", size_gib=10)
@@ -21,6 +22,7 @@ def test_ebs_volume_conversion_math() -> None:
 
     assert instance.total_ebs_gib == 100
     assert round(instance.total_ebs_gb, 1) == 107.4
+
 
 def test_format_plaintext_output() -> None:
     """Test plaintext formatting against expected table structure."""
@@ -47,6 +49,7 @@ def test_format_plaintext_output() -> None:
     assert "107.4" in lines[0]
     assert lines[1] == "Total EBS Volume Size: 107.4 GB"
 
+
 def test_format_json_output() -> None:
     """Test JSON formatting output structure."""
     instance = EC2Instance(
@@ -67,6 +70,7 @@ def test_format_json_output() -> None:
     assert data["instances"][0]["name"] == "es-node-1"
     assert data["instances"][0]["public_ip"] == "54.200.1.1"
     assert data["instances"][0]["volumes"][0]["id"] == "vol-abc"
+
 
 def test_format_plaintext_empty_state() -> None:
     """Verify the formatter handles empty lists without raising max() ValueError."""

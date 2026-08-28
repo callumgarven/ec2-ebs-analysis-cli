@@ -1,8 +1,9 @@
 import os
+from collections.abc import Generator
+
 import boto3
 import pytest
 from moto import mock_aws
-from collections.abc import Generator
 from mypy_boto3_ec2 import EC2Client
 
 
@@ -22,8 +23,9 @@ def block_real_aws_credentials() -> None:
     # Ensure AWS_PROFILE is not set
     os.environ.pop("AWS_PROFILE", None)
 
+
 @pytest.fixture
-def ec2_client(block_real_aws_credentials: None) -> Generator[EC2Client, None, None]:
+def ec2_client(block_real_aws_credentials: None) -> Generator[EC2Client]:
     """Provide a Moto-mocked EC2 client."""
 
     with mock_aws():

@@ -5,12 +5,14 @@ from ec2_ebs_analysis_cli.cli import app
 
 runner = CliRunner()
 
+
 def test_cli_help() -> None:
     """Verify help executes successfully and outputs the description."""
     result = runner.invoke(app, ["--help"])
 
     assert result.exit_code == 0
     assert "Inspect EC2 instances" in result.output
+
 
 def test_cli_execution_and_sorting(ec2_client: EC2Client) -> None:
     """Verify full CLI execution with client-side sorting."""

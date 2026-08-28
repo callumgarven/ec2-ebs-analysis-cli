@@ -4,7 +4,7 @@ CLI tool to analyse and summarize EBS volume usage per EC2 instance across AWS r
 
 # Commands
 ```
-uv run python src/ec2_ebs_analysis_cli/cli.py --help
+uv run ec2-ebs-analysis-cli --help
 uv run ruff check --fix . 
 uv run ruff format . 
 uv run mypy src

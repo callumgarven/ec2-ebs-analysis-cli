@@ -21,14 +21,11 @@ jobs:
           version: "0.5.0"
           enable-cache: true
 
-      - name: Set up Python 3.12
+      - name: Set up Python
         run: uv python install 3.12
 
-      - name: Check if uv.lock is up to date
-        run: uv lock --check
-
       - name: Install Testing Dependencies
-        run: uv sync --group test --no-install-project
+        run: uv sync --locked --group test --no-install-project
 
       - name: Setup Reviewdog
         uses: reviewdog/action-setup@v1

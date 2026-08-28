@@ -27,22 +27,14 @@ jobs:
       - name: Install Testing Dependencies
         run: uv sync --locked --group test --no-install-project
 
-      - name: Setup Reviewdog
-        uses: reviewdog/action-setup@v1
-        with:
-          reviewdog_version: latest
+      - name: Check Formatting (Ruff)
+        run: uv run ruff format --check .
 
-      - name: Run Ruff with Reviewdog
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          uv run ruff check --output-format=rdjson . | reviewdog -f=rdjson -name="ruff" -reporter=github-pr-review -filter-mode=added -fail-on-error=true
+      - name: Lint Code (Ruff)
+        run: uv run ruff check .
 
-      - name: Run Mypy for Type Checking with Reviewdog
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          uv run mypy src --show-column-numbers | reviewdog -f=mypy -name="mypy-type-checker" -reporter=github-pr-review -filter-mode=added -level=warning
+      - name: Type Check (Mypy)
+        run: uv run mypy src
 
       - name: Run Unit Tests with Coverage
         run: |
